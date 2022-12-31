@@ -1,8 +1,14 @@
+import { useState } from "react";
+import TerminalInputLine from "./terminal-input-line";
+
 export default function Terminal() {
+  const [command, setCommand] = useState<string>("c");
   return (
-    <div className="w-2/3 min-w-[400px]">
-      <div className="relative h-10 rounded-t-md bg-[rgba(45,45,45,1)] before:absolute before:left-1 before:m-3 before:h-4 before:w-4 before:rounded-full before:bg-[rgba(100,100,100,1)] before:shadow-[1.4em_0em_rgba(100,100,100,1),2.8em_0em_rgba(100,100,100,1)] before:content-['']"></div>
-      <div className="relative h-96 rounded-b-md bg-[rgba(20,20,20,1)]"></div>
+    <div className="w-2/3 min-w-[400px] max-w-2xl rounded-lg shadow-2xl shadow-gray-900">
+      <div className="relative h-10 rounded-t-lg bg-[rgba(27,27,34,1)] before:absolute before:left-1 before:m-3 before:h-4 before:w-4 before:rounded-full before:bg-[rgba(60,60,60,1)] before:shadow-[1.4em_0em_rgba(60,60,60,1),2.8em_0em_rgba(60,60,60,1)] before:content-['']"></div>
+      <div className="relative h-96 rounded-b-lg bg-[rgba(18,18,18,1)] font-mono">
+        <TerminalInputLine command={command} updateCommand={setCommand} />
+      </div>
     </div>
   );
 }
