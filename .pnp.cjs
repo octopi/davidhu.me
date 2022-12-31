@@ -28,6 +28,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@types/dom-inputevent", "npm:1.0.7"],\
             ["@types/node", "npm:18.11.3"],\
             ["@types/react", "npm:18.0.21"],\
             ["@types/react-dom", "npm:18.0.6"],\
@@ -247,6 +248,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@tootallnate-once-npm-2.0.0-e36cf4f140-ad87447820.zip/node_modules/@tootallnate/once/",\
           "packageDependencies": [\
             ["@tootallnate/once", "npm:2.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@types/dom-inputevent", [\
+        ["npm:1.0.7", {\
+          "packageLocation": "./.yarn/cache/@types-dom-inputevent-npm-1.0.7-4675da9c80-eb109efd5c.zip/node_modules/@types/dom-inputevent/",\
+          "packageDependencies": [\
+            ["@types/dom-inputevent", "npm:1.0.7"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1916,6 +1926,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["root-workspace-0b6124", "workspace:."],\
+            ["@types/dom-inputevent", "npm:1.0.7"],\
             ["@types/node", "npm:18.11.3"],\
             ["@types/react", "npm:18.0.21"],\
             ["@types/react-dom", "npm:18.0.6"],\

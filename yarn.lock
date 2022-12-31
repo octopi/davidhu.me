@@ -40,6 +40,11 @@
   dependencies:
     "tslib" "^2.4.0"
 
+"@types/dom-inputevent@^1.0.7":
+  "integrity" "sha512-R0ILeMNwjxCwiF9FDlCl2pUlGZW+4OUqJe6DyOsyrdK1PEoZ1TxgkfQfEy7vniFUrKyAy+dP2BNAXcRqEyf9dQ=="
+  "resolved" "https://registry.npmjs.org/@types/dom-inputevent/-/dom-inputevent-1.0.7.tgz"
+  "version" "1.0.7"
+
 "@types/node@18.11.3":
   "integrity" "sha512-fNjDQzzOsZeKZu5NATgXUPsaFaTxeRgFXoosrHivTl8RGeV733OLawXsGfEk9a8/tySyZUyiZ6E8LcjPFZ2y1A=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-18.11.3.tgz"
