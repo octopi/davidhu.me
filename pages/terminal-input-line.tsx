@@ -1,6 +1,7 @@
-import React, { useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
 
 type TerminalInputLineProps = {
+  canEdit: boolean;
   command: string;
   updateCommand: (command: string) => void;
   executeCommand: () => void;
@@ -9,6 +10,7 @@ type TerminalInputLineProps = {
 };
 
 export default function TerminalInputLine({
+  canEdit,
   command,
   updateCommand,
   executeCommand,
@@ -45,16 +47,20 @@ export default function TerminalInputLine({
     }
   };
 
+  useEffect(() => {
+    focusInputLine();
+  }, []);
+
   const shouldShowAutocomplete =
     canAutocomplete && autocomplete.substring(0, command.length) === command;
 
   return (
     <div
-      className="absolute m-2 before:text-gray-500 before:content-['$']"
+      className="m-2 before:text-gray-500 before:content-['$']"
       onClick={focusInputLine}
     >
       <span
-        contentEditable
+        contentEditable={canEdit}
         className="top-0 left-4 ml-2 h-10 border-0 bg-transparent text-sm font-bold text-gray-300 caret-blue-400 outline-none"
         onInput={handleChange}
         dangerouslySetInnerHTML={{ __html: defaultCommand.current }}
