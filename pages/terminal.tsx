@@ -2,7 +2,10 @@ import { useState } from "react";
 import TerminalInputLine from "./terminal-input-line";
 
 export default function Terminal() {
-  const [command, setCommand] = useState<string>("c");
+  const initialCommands = [
+    {id: 0, command: "c", canAutoComplete: true, autoComplete: "curl thething.com"},
+  ]
+  const [commands, setCommands] = useState<array>(initialCommands);
   const executeCommand = () => {
     console.log("executing! command is", command);
     setCommand("");

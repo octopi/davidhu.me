@@ -180,6 +180,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/lodash@npm:^4.14.191":
+  version: 4.14.191
+  resolution: "@types/lodash@npm:4.14.191"
+  checksum: ba0d5434e10690869f32d5ea49095250157cae502f10d57de0a723fd72229ce6c6a4979576f0f13e0aa9fbe3ce2457bfb9fa7d4ec3d6daba56730a51906d1491
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:18.11.3":
   version: 18.11.3
   resolution: "@types/node@npm:18.11.3"
@@ -961,6 +968,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lodash@npm:^4.17.21":
+  version: 4.17.21
+  resolution: "lodash@npm:4.17.21"
+  checksum: eb835a2e51d381e561e508ce932ea50a8e5a68f4ebdd771ea240d3048244a8d13658acbd502cd4829768c56f2e16bdd4340b9ea141297d472517b83868e677f7
+  languageName: node
+  linkType: hard
+
 "loose-envify@npm:^1.1.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
@@ -1611,10 +1625,12 @@ next@latest:
   resolution: "root-workspace-0b6124@workspace:."
   dependencies:
     "@types/dom-inputevent": ^1.0.7
+    "@types/lodash": ^4.14.191
     "@types/node": 18.11.3
     "@types/react": 18.0.21
     "@types/react-dom": 18.0.6
     autoprefixer: ^10.4.12
+    lodash: ^4.17.21
     next: latest
     postcss: ^8.4.18
     prettier: ^2.8.1

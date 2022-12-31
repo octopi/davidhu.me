@@ -65,7 +65,6 @@ export default function TerminalInputLine({
           {autocomplete.substring(command.length)}
         </span>
       )}
-      <div className="text-green-50">{command}</div>
     </div>
   );
 }
