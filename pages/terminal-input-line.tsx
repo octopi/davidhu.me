@@ -56,12 +56,12 @@ export default function TerminalInputLine({
 
   return (
     <div
-      className="m-2 before:text-gray-500 before:content-['$']"
+      className="px-2 pt-2 before:text-gray-500 before:content-['$']"
       onClick={focusInputLine}
     >
       <span
         contentEditable={canEdit}
-        className="top-0 left-4 ml-2 h-10 border-0 bg-transparent text-sm font-bold text-gray-300 caret-blue-400 outline-none"
+        className="top-0 left-4 ml-2 border-0 bg-transparent text-sm font-bold text-gray-300 caret-blue-400 outline-none"
         onInput={handleChange}
         dangerouslySetInnerHTML={{ __html: defaultCommand.current }}
         ref={inputLine}
