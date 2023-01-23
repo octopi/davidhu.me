@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import TerminalInputLine from "./terminal-input-line";
 import _ from "lodash";
 
@@ -31,6 +31,12 @@ export default function Terminal() {
     },
   ];
   const [lines, setLines] = useState<Array<TerminalLine>>(initialLines);
+  const endCommandsRef = useRef<null | HTMLDivElement>(null);
+
+  // react command that scrolls to the bottom of the terminal
+  useEffect(() => {
+    endCommandsRef.current?.scrollIntoView();
+  }, [lines]);
 
   const updateCommand = (command: string) => {
     const newLines = [...lines];
@@ -50,6 +56,15 @@ export default function Terminal() {
     console.log("executing! command is", input.command);
     const newCommands: Array<TerminalLine> = [...lines];
     newCommands[newCommands.length - 1] = input;
+
+    // get result line
+    newCommands.push({
+      id: newCommands.length,
+      type: "result",
+      result: "bla test result",
+    });
+
+    // add a new input line
     newCommands.push({
       id: newCommands.length,
       type: "input",
@@ -79,8 +94,13 @@ export default function Terminal() {
                 autocomplete={line.autoComplete}
               />
             );
+          } else {
+            return (
+              <div className="text-gray-700 px-2" key={line.id}>{line.result}</div>
+            );
           }
         })}
+        <div ref={endCommandsRef} />
       </div>
     </div>
   );

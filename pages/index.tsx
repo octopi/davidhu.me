@@ -11,12 +11,12 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="flex w-full flex-1 flex-col items-center justify-center px-20">
-        <h1 className="text-6xl font-bold text-slate-500">
+        {/* <h1 className="text-6xl font-bold text-slate-500">
             Hi, my name is{" "}
           <a className="text-blue-600" href="https://nextjs.org">
             David
           </a>
-        </h1>
+        </h1> */}
 
         <div className="w-20">
           <video autoPlay controls loop muted>

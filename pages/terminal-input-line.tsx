@@ -22,7 +22,9 @@ export default function TerminalInputLine({
 
   // @ts-ignore
   const handleChange = (e: React.InputEvent<HTMLSpanElement>) => {
-    if (e.nativeEvent.inputType === "insertParagraph") {
+    let shouldExecute = e.nativeEvent.inputType === "insertParagraph"
+      || e.currentTarget.innerText.lastIndexOf('\n') + 1 === e.currentTarget.innerText.length;
+    if (shouldExecute) {
       executeCommand();
     } else {
       updateCommand(
