@@ -9,6 +9,10 @@ type TerminalInputLineProps = {
   autocomplete: string;
 };
 
+const sanitize = (command: string) => {
+  return command.replace(/\u200B/g, "").replace(/\u00A0/g, " ");
+};
+
 export default function TerminalInputLine({
   canEdit,
   command,
@@ -22,14 +26,17 @@ export default function TerminalInputLine({
 
   // @ts-ignore
   const handleChange = (e: React.InputEvent<HTMLSpanElement>) => {
-    let shouldExecute = e.nativeEvent.inputType === "insertParagraph"
-      || e.currentTarget.innerText.lastIndexOf('\n') + 1 === e.currentTarget.innerText.length;
+    let shouldExecute =
+      e.nativeEvent.inputType === "insertParagraph" ||
+      (e.currentTarget.innerText.length > 0 &&
+        e.currentTarget.innerText.lastIndexOf("\n") + 1 ===
+          e.currentTarget.innerText.length);
     if (shouldExecute) {
       executeCommand();
     } else {
       updateCommand(
         e.currentTarget.textContent
-          ? e.currentTarget.textContent.replace(/\u00A0/g, " ")
+          ? sanitize(e.currentTarget.textContent)
           : ""
       );
     }
@@ -40,12 +47,8 @@ export default function TerminalInputLine({
     let textNode = il?.firstChild;
     if (il && textNode) {
       il.focus();
-      let range = document.createRange();
-      range.setStart(textNode, textNode?.nodeValue?.length || 0);
-      range.setEnd(textNode, textNode?.nodeValue?.length || 0);
-      let sel = window.getSelection();
-      sel?.removeAllRanges();
-      sel?.addRange(range);
+      let sel = window.getSelection()?.selectAllChildren(il);
+      window.getSelection()?.collapseToEnd();
     }
   };
 
@@ -54,7 +57,7 @@ export default function TerminalInputLine({
   }, []);
 
   const shouldShowAutocomplete =
-    canAutocomplete && autocomplete.substring(0, command.length) === command;
+    canAutocomplete && autocomplete.substring(0, sanitize(command).length) === sanitize(command);
 
   return (
     <div
@@ -70,7 +73,7 @@ export default function TerminalInputLine({
       />
       {shouldShowAutocomplete && (
         <span className="font-mono text-sm italic text-gray-500">
-          {autocomplete.substring(command.length)}
+          {autocomplete.substring(sanitize(command).length)}
         </span>
       )}
     </div>

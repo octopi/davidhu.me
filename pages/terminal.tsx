@@ -20,12 +20,15 @@ interface InputLine {
   canEdit: boolean;
 }
 
+// zero-width space to allow cursor to focus on empty lines
+const FOCUS_HACK = "\u200B";
+
 export default function Terminal() {
   const initialLines: Array<TerminalLine> = [
     {
       id: 0,
       type: "input",
-      command: "c",
+      command: `${FOCUS_HACK}c`,
       canAutoComplete: true,
       autoComplete: "curl thething.com",
       canEdit: true,
@@ -55,7 +58,7 @@ export default function Terminal() {
       autoComplete: "",
       canEdit: false,
     });
-    console.log("executing! command is", input.command);
+
     const newCommands: Array<TerminalLine> = [...lines];
     newCommands[newCommands.length - 1] = input;
 
@@ -70,7 +73,7 @@ export default function Terminal() {
     newCommands.push({
       id: newCommands.length,
       type: "input",
-      command: " ",
+      command: FOCUS_HACK,
       canAutoComplete: false,
       autoComplete: "",
       canEdit: true,
