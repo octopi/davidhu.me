@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { scrollIntoView } from "seamless-scroll-polyfill";
 import TerminalInputLine from "./terminal-input-line";
 import _ from "lodash";
 
@@ -31,11 +32,12 @@ export default function Terminal() {
     },
   ];
   const [lines, setLines] = useState<Array<TerminalLine>>(initialLines);
-  const endCommandsRef = useRef<null | HTMLDivElement>(null);
+  const endCommandsRef = useRef<HTMLDivElement | null>(null);
 
   // react command that scrolls to the bottom of the terminal
   useEffect(() => {
-    endCommandsRef.current?.scrollIntoView();
+    if (endCommandsRef.current)
+      scrollIntoView(endCommandsRef.current, { behavior: "smooth" });
   }, [lines]);
 
   const updateCommand = (command: string) => {
@@ -61,7 +63,7 @@ export default function Terminal() {
     newCommands.push({
       id: newCommands.length,
       type: "result",
-      result: "bla test result",
+      result: "you said: " + input.command,
     });
 
     // add a new input line
