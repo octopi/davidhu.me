@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { scrollIntoView } from "seamless-scroll-polyfill";
 import TerminalInputLine from "./terminal-input-line";
+import JSONResponse from "./json-response";
 import _ from "lodash";
 
 type TerminalLine = InputLine | Result;
 
 interface Result {
   id: number;
-  type: "result";
+  type: "result" | "jsonresult";
   result: string;
 }
 
@@ -106,7 +107,7 @@ export default function Terminal() {
     const result = await getCommandResults(input.command);
     newCommands.push({
       id: newCommands.length,
-      type: "result",
+      type: result.error ? "result" : "jsonresult", // just assume all valid results are json
       result: result.message,
     });
 
@@ -145,7 +146,9 @@ export default function Terminal() {
               />
             );
           } else {
-            return (
+            return line.type === "jsonresult" ? (
+              <JSONResponse key={line.id} data={line.result} />
+            ) : (
               <div className="px-2 text-gray-500" key={line.id}>
                 {line.result}
               </div>
