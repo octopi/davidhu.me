@@ -30,7 +30,7 @@ const AUTOCOMPLETE_LINES = [
   `curl ${API_URL_ROOT}/api/me`,
   `curl ${API_URL_ROOT}/api/me/bio`,
   `curl ${API_URL_ROOT}/api/me/experience`,
-  `curl ${API_URL_ROOT}/api/contact`,
+  `curl ${API_URL_ROOT}/api/me/contact`,
 ];
 
 // get results for terminal comment
@@ -94,9 +94,16 @@ export default function Terminal() {
 
   const updateCommand = (command: string) => {
     const newLines = [...lines];
+
+    //copilot: find the index of AUTOCOMPLET_LINES that matches the start of the command
+    const newAutocompleteIndex = AUTOCOMPLETE_LINES.findIndex((line) =>
+      line.startsWith(command)
+    );
+
     const newInputLine = _.merge(newLines[newLines.length - 1], {
       command,
       canAutoComplete: true,
+      autoComplete: AUTOCOMPLETE_LINES[newAutocompleteIndex],
     });
     newLines[newLines.length - 1] = newInputLine;
     setLines(newLines);
