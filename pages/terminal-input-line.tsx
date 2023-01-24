@@ -7,6 +7,7 @@ type TerminalInputLineProps = {
   executeCommand: () => void;
   canAutocomplete: boolean;
   autocomplete: string;
+  refocusTrigger: boolean; // hack to refocus the input line
 };
 
 const sanitize = (command: string) => {
@@ -20,6 +21,7 @@ export default function TerminalInputLine({
   executeCommand,
   canAutocomplete,
   autocomplete,
+  refocusTrigger,
 }: TerminalInputLineProps) {
   const defaultCommand = useRef(command);
   const inputLine = useRef<HTMLSpanElement>(null);
@@ -54,7 +56,7 @@ export default function TerminalInputLine({
 
   useEffect(() => {
     focusInputLine();
-  }, []);
+  }, [refocusTrigger]);
 
   const shouldShowAutocomplete =
     canAutocomplete && autocomplete.substring(0, sanitize(command).length) === sanitize(command);
