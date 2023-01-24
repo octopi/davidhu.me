@@ -11,7 +11,9 @@ type TerminalInputLineProps = {
 };
 
 const sanitize = (command: string) => {
-  return command.replace(/\u200B/g, "").replace(/\u00A0/g, " ");
+  return command
+    .replace(/\u200B/g, "") // zero-width space
+    .replace(/\u00A0/g, " "); // non-breaking space
 };
 
 export default function TerminalInputLine({
@@ -23,7 +25,7 @@ export default function TerminalInputLine({
   autocomplete,
   refocusTrigger,
 }: TerminalInputLineProps) {
-  const defaultCommand = useRef(command);
+  const defaultCommand = useRef(command); // from https://stackoverflow.com/questions/45306325/react-contenteditable-and-cursor-position
   const inputLine = useRef<HTMLSpanElement>(null);
 
   // @ts-ignore
@@ -37,10 +39,18 @@ export default function TerminalInputLine({
       executeCommand();
     } else {
       updateCommand(
-        e.currentTarget.textContent
-          ? sanitize(e.currentTarget.textContent)
-          : ""
+        e.currentTarget.textContent ? sanitize(e.currentTarget.textContent) : ""
       );
+    }
+  };
+
+  // @ts-ignore
+  const completeCommand = (e: React.InputEvent<HTMLSpanElement>) => {
+    if (e.keyCode === 9 && canAutocomplete) {
+      updateCommand(autocomplete);
+      if (inputLine.current) inputLine.current.innerText = autocomplete;
+      e.preventDefault();
+      focusInputLine();
     }
   };
 
@@ -59,7 +69,8 @@ export default function TerminalInputLine({
   }, [refocusTrigger]);
 
   const shouldShowAutocomplete =
-    canAutocomplete && autocomplete.substring(0, sanitize(command).length) === sanitize(command);
+    canAutocomplete &&
+    autocomplete.substring(0, sanitize(command).length) === sanitize(command);
 
   return (
     <div
@@ -71,6 +82,7 @@ export default function TerminalInputLine({
         className="top-0 left-4 ml-2 border-0 bg-transparent text-sm font-bold text-gray-300 caret-blue-400 outline-none"
         onInput={handleChange}
         dangerouslySetInnerHTML={{ __html: defaultCommand.current }}
+        onKeyDown={completeCommand}
         ref={inputLine}
       />
       {shouldShowAutocomplete && (

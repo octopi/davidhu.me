@@ -116,7 +116,7 @@ export default function Terminal() {
       type: "input",
       command: FOCUS_HACK,
       canAutoComplete: result.error,
-      autoComplete: result.error ? `curl ${API_URL_ROOT}/api/me` : '',
+      autoComplete: result.error ? `curl ${API_URL_ROOT}/api/me` : "",
       canEdit: true,
     });
     console.log(newCommands);
@@ -146,7 +146,7 @@ export default function Terminal() {
             );
           } else {
             return (
-              <div className="px-2 text-gray-700" key={line.id}>
+              <div className="px-2 text-gray-500" key={line.id}>
                 {line.result}
               </div>
             );
