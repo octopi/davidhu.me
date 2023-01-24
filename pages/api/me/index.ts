@@ -14,15 +14,15 @@ export default async function handler(
   await runMiddleware(req, res, cors);
 
   let response = {
-    me: {
-      about: "Explore my API by following the paths below!",
-      help: "On mobile or desktop, you can always tap the links instead of typing.",
-    },
     links: [
       { path: "/me/bio", method: "GET" },
       { path: "/me/experience", method: "GET" },
       { path: "/me/contact", method: "GET" },
     ],
+    me: {
+      about: "Explore my API by following the paths below!",
+      help: "On mobile or desktop, you can always tap the links instead of typing.",
+    },
   };
 
   res.status(200).json(response);

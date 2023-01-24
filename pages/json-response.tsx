@@ -7,16 +7,16 @@ type JSONResponseProps = {
 };
 
 export default function JSONResponse({ data }: JSONResponseProps) {
-  function prettify(o:any, indent = 0, hasMore = false) {
+  function prettify(o: any, indent = 0, hasMore = false) {
     let result;
     switch (typeof o) {
       case "string":
         result = (
           <span>
-          <pre className="inline whitespace-pre-wrap text-green-900">
-            "{o}"
-          </pre>
-          {hasMore ? "," : ""}
+            <pre className="inline whitespace-pre-wrap text-green-900">
+              "{o}"
+            </pre>
+            {hasMore ? "," : ""}
           </span>
         );
         break;
@@ -39,17 +39,22 @@ export default function JSONResponse({ data }: JSONResponseProps) {
           result = (
             <div>
               <pre>{" ".repeat(indent * 2) + `[`}</pre>
-              {o.map((item, idx) =>
-                <span key={idx}>{prettify(item, indent + 1, idx < o.length - 1)}</span>
-              )}
-              <pre>{" ".repeat(indent * 2) + `]`}</pre>
+              {o.map((item, idx) => (
+                <span key={idx}>
+                  {prettify(item, indent + 1, idx < o.length - 1)}
+                </span>
+              ))}
+              <pre>
+                {" ".repeat(indent * 2) + `]`}
+                {hasMore ? "," : ""}
+              </pre>
             </div>
           );
         } else {
           result = (
             <div>
               <pre>{" ".repeat(indent * 2) + `{`}</pre>
-              {Object.keys(o).map((key:string, idx:number) => {
+              {Object.keys(o).map((key: string, idx: number) => {
                 const value = o[key];
                 const isLast = idx === Object.keys(o).length - 1;
                 return (
@@ -82,7 +87,7 @@ export default function JSONResponse({ data }: JSONResponseProps) {
   }
 
   return (
-    <div className=" px-2 text-gray-500">
+    <div className="text-sm px-2 text-gray-500">
       <pre className="whitespace-pre-wrap">{prettify(JSON.parse(data))}</pre>
     </div>
   );

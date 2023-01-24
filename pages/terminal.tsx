@@ -26,6 +26,13 @@ const API_URL_ROOT = "http://localhost:3000";
 // zero-width space to allow cursor to focus on empty lines
 const FOCUS_HACK = "\u200B";
 
+const AUTOCOMPLETE_LINES = [
+  `curl ${API_URL_ROOT}/api/me`,
+  `curl ${API_URL_ROOT}/api/me/bio`,
+  `curl ${API_URL_ROOT}/api/me/experience`,
+  `curl ${API_URL_ROOT}/api/contact`,
+];
+
 // get results for terminal comment
 const getCommandResults = async (command: string) => {
   const commandParts = command.split(" ");
@@ -57,13 +64,14 @@ const getCommandResults = async (command: string) => {
 };
 
 export default function Terminal() {
+  const [autocompleteIndex, setAutocompleteIndex] = useState(0);
   const initialLines: Array<TerminalLine> = [
     {
       id: 0,
       type: "input",
       command: `${FOCUS_HACK}c`,
       canAutoComplete: true,
-      autoComplete: `curl ${API_URL_ROOT}/api/me`,
+      autoComplete: AUTOCOMPLETE_LINES[autocompleteIndex],
       canEdit: true,
     },
   ];
@@ -86,7 +94,11 @@ export default function Terminal() {
 
   const updateCommand = (command: string) => {
     const newLines = [...lines];
-    (newLines[newLines.length - 1] as InputLine).command = command;
+    const newInputLine = _.merge(newLines[newLines.length - 1], {
+      command,
+      canAutoComplete: true,
+    });
+    newLines[newLines.length - 1] = newInputLine;
     setLines(newLines);
   };
 
@@ -111,17 +123,21 @@ export default function Terminal() {
       result: result.message,
     });
 
+    // if the command was valid, suggest autocomplete for the next command
+    const newAutocompleteIndex = result.error ? autocompleteIndex : autocompleteIndex + 1;
+
     // add a new input line
     newCommands.push({
       id: newCommands.length,
       type: "input",
       command: FOCUS_HACK,
       canAutoComplete: result.error,
-      autoComplete: result.error ? `curl ${API_URL_ROOT}/api/me` : "",
+      autoComplete: AUTOCOMPLETE_LINES[newAutocompleteIndex],
       canEdit: true,
     });
-    console.log(newCommands);
+
     setLines([...newCommands]);
+    setAutocompleteIndex(newAutocompleteIndex);
   };
 
   return (

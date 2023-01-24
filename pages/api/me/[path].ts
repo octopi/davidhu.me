@@ -34,34 +34,37 @@ export default async function handler(
   switch (path) {
     case "bio":
       response = _.merge({
+        links,
         bio: {
           homebase: "Brooklyn, NY",
           education: "B.S. Computer Science, Columbia University",
           likes: ["⛷️", "✈️", "🏔️", "🍺", "🍗", "🍜"],
           dislikes: ["🍅"],
         },
-        links,
       });
       break;
     case "experience":
       response = _.merge({
-        experience: {},
         links,
+        experience: {},
       });
       break;
     case "contact":
       response = _.merge({
+        links,
         contact: {
           email: "octopie@gmail.com",
           twitter: "@octopi",
           github: "@octopi",
           instagram: "@octopeye",
         },
-        links,
       });
       break;
     default:
-      response = _.merge({error:  "Nothing is here! Did you mean `/api/me`?"}, {links});
+      response = _.merge(
+        { error: "Nothing is here! Did you mean `/api/me`?" },
+        { links }
+      );
       didError = true;
   }
 
