@@ -53,10 +53,10 @@ export default async function handler(
       response = _.merge({
         links,
         contact: {
-          email: "octopie@gmail.com",
-          twitter: "@octopi",
-          github: "@octopi",
-          instagram: "@octopeye",
+          email: "mailto:me@davidhu.me",
+          twitter: "https://twitter.com/octopi",
+          github: "https://github.com/octopi",
+          instagram: "https://instagram.com/octopeye",
         },
       });
       break;

@@ -14,7 +14,11 @@ export default function JSONResponse({ data }: JSONResponseProps) {
         result = (
           <span>
             <pre className="inline whitespace-pre-wrap text-green-900">
-              "{o}"
+              "{
+                o.startsWith('http') || o.startsWith('mailto')
+                  ? <a className="underline" href={o}>{o}</a>
+                  : o
+              }"
             </pre>
             {hasMore ? "," : ""}
           </span>
