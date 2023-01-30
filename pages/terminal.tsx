@@ -64,14 +64,13 @@ const getCommandResults = async (command: string) => {
 };
 
 export default function Terminal() {
-  const [autocompleteIndex, setAutocompleteIndex] = useState(0);
   const initialLines: Array<TerminalLine> = [
     {
       id: 0,
       type: "input",
       command: `${FOCUS_HACK}c`,
       canAutoComplete: true,
-      autoComplete: AUTOCOMPLETE_LINES[autocompleteIndex],
+      autoComplete: AUTOCOMPLETE_LINES[0],
       canEdit: true,
     },
   ];
@@ -156,23 +155,17 @@ export default function Terminal() {
       result: result.message,
     });
 
-    // if the command was valid, suggest autocomplete for the next command
-    const newAutocompleteIndex = result.error
-      ? autocompleteIndex
-      : autocompleteIndex + 1;
-
     // add a new input line
     newCommands.push({
       id: newCommands.length,
       type: "input",
       command: FOCUS_HACK,
       canAutoComplete: result.error,
-      autoComplete: AUTOCOMPLETE_LINES[newAutocompleteIndex],
+      autoComplete: AUTOCOMPLETE_LINES[1],
       canEdit: true,
     });
 
     setLines([...newCommands]);
-    setAutocompleteIndex(newAutocompleteIndex);
   };
 
   return (
