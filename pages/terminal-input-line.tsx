@@ -82,7 +82,6 @@ export default function TerminalInputLine({
   }, [refocusTrigger]);
 
   useEffect(() => {
-    console.log("here")
     if (inputLine.current) inputLine.current.innerText = command;
     focusInputLine();
   }, [command]);
