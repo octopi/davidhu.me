@@ -34,7 +34,7 @@ const AUTOCOMPLETE_LINES = [
 ];
 
 // get results for terminal comment
-const getCommandResults = async (command: string) => {
+const fetchCommandResults = async (command: string) => {
   const commandParts = command.split(" ");
   const commandName = commandParts[0];
   const commandArgs = commandParts.slice(1);
@@ -51,10 +51,17 @@ const getCommandResults = async (command: string) => {
   const urlParts = commandArgs[0].split(API_URL_ROOT);
   // check if the URL is safe (this domain only)
   if (urlParts.length === 2 && urlParts[0] === "") {
-    const response = await (
-      await fetch(`${API_URL_ROOT}${urlParts[1]}`)
-    ).json();
-    return { message: JSON.stringify(response), error: false };
+    try {
+      const response = await (
+        await fetch(`${API_URL_ROOT}${urlParts[1]}`)
+      ).json();
+      return { message: JSON.stringify(response), error: false };
+    } catch (e) {
+      return {
+        message: "Error calling the API! Check the route or try again later.",
+        error: true,
+      };
+    }
   } else {
     return {
       message: `Sorry, I can only fetch from ${API_URL_ROOT}`,
@@ -91,11 +98,32 @@ export default function Terminal() {
     setRefocusTrigger(!refocusTrigger);
   };
 
+  const handleApiRouteClick = (route: string) => {
+    const newLines = [...lines];
+    (
+      newLines[newLines.length - 1] as InputLine
+    ).command = `curl ${API_URL_ROOT}/api${route}`;
+
+    setLines(newLines);
+    handleExecuteCommand();
+  };
+
+  const handleAutocompleteClick = () => {
+    // copilot: set the latest command to the value of the autocomplete
+    const newLines = [...lines];
+    (newLines[newLines.length - 1] as InputLine).command = (
+      newLines[newLines.length - 1] as InputLine
+    ).autoComplete;
+
+    setLines(newLines);
+    handleExecuteCommand();
+  };
+
   /**
    * Update state to reflect the current text of the command
    * @param command string the command
    */
-  const updateCommand = (command: string) => {
+  const handleUpdateCommand = (command: string) => {
     const newLines = [...lines];
 
     //copilot: find the index of AUTOCOMPLET_LINES that matches the start of the command
@@ -113,16 +141,16 @@ export default function Terminal() {
     setCycleIndex(0);
   };
 
-  const cycleCommand = (direction: number) => {
+  const handleCycleCommand = (direction: number) => {
     let newCycleIndex = cycleIndex + direction;
     let prevCommandIndex = lines.length - 1 + newCycleIndex * 2;
     if (newCycleIndex > 0) return; // don't loop around
     if (lines.length - 1 + newCycleIndex * 2 < 0) return;
 
     const newLines = [...lines];
-    
+
     if (newCycleIndex === 0) {
-      (newLines[newLines.length - 1] as InputLine).command = '';
+      (newLines[newLines.length - 1] as InputLine).command = "";
     } else {
       (newLines[newLines.length - 1] as InputLine).command = (
         lines[prevCommandIndex] as InputLine
@@ -134,7 +162,7 @@ export default function Terminal() {
     setRefocusTrigger(!refocusTrigger);
   };
 
-  const executeCommand = async () => {
+  const handleExecuteCommand = async () => {
     const input = _.last(lines) as InputLine;
 
     // freeze the current input line
@@ -148,7 +176,7 @@ export default function Terminal() {
     newCommands[newCommands.length - 1] = input;
 
     // get result line
-    const result = await getCommandResults(input.command);
+    const result = await fetchCommandResults(input.command);
     newCommands.push({
       id: newCommands.length,
       type: result.error ? "result" : "jsonresult", // just assume all valid results are json
@@ -182,9 +210,10 @@ export default function Terminal() {
                 key={line.id}
                 canEdit={line.id === lines.length - 1}
                 command={line.command}
-                updateCommand={updateCommand}
-                executeCommand={executeCommand}
-                cycleCommand={cycleCommand}
+                onUpdateCommand={handleUpdateCommand}
+                onExecuteCommand={handleExecuteCommand}
+                onCycleCommand={handleCycleCommand}
+                onAutocompleteClick={handleAutocompleteClick}
                 canAutocomplete={line.canAutoComplete}
                 autocomplete={line.autoComplete}
                 refocusTrigger={refocusTrigger}
@@ -192,7 +221,11 @@ export default function Terminal() {
             );
           } else {
             return line.type === "jsonresult" ? (
-              <JSONResponse key={line.id} data={line.result} />
+              <JSONResponse
+                key={line.id}
+                data={line.result}
+                onApiRouteClick={handleApiRouteClick}
+              />
             ) : (
               <div className="px-2 text-gray-500" key={line.id}>
                 {line.result}

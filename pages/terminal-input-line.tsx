@@ -3,9 +3,10 @@ import React, { useEffect, useRef } from "react";
 type TerminalInputLineProps = {
   canEdit: boolean;
   command: string;
-  updateCommand: (command: string) => void;
-  cycleCommand: (direction: number) => void;
-  executeCommand: () => void;
+  onUpdateCommand: (command: string) => void;
+  onCycleCommand: (direction: number) => void;
+  onExecuteCommand: () => void;
+  onAutocompleteClick: () => void;
   canAutocomplete: boolean;
   autocomplete: string;
   refocusTrigger: boolean; // hack to refocus the input line
@@ -20,9 +21,10 @@ const sanitize = (command: string) => {
 export default function TerminalInputLine({
   canEdit,
   command,
-  updateCommand,
-  executeCommand,
-  cycleCommand,
+  onUpdateCommand: onUpdateCommand,
+  onExecuteCommand: onExecuteCommand,
+  onCycleCommand: onCycleCommand,
+  onAutocompleteClick: onAutocompleteClick,
   canAutocomplete,
   autocomplete,
   refocusTrigger,
@@ -38,9 +40,9 @@ export default function TerminalInputLine({
         e.currentTarget.innerText.lastIndexOf("\n") + 1 ===
           e.currentTarget.innerText.length);
     if (shouldExecute) {
-      executeCommand();
+      onExecuteCommand();
     } else {
-      updateCommand(
+      onUpdateCommand(
         e.currentTarget.textContent ? sanitize(e.currentTarget.textContent) : ""
       );
     }
@@ -50,19 +52,19 @@ export default function TerminalInputLine({
   const handleKeyDown = (e: React.InputEvent<HTMLSpanElement>) => {
     // tab for autocomplete
     if (e.keyCode === 9 && canAutocomplete) {
-      updateCommand(autocomplete);
+      onUpdateCommand(autocomplete);
       if (inputLine.current) inputLine.current.innerText = autocomplete;
       e.preventDefault();
       focusInputLine();
     }
     // up for previous command
     else if (e.keyCode === 38) {
-      cycleCommand(-1);
+      onCycleCommand(-1);
       e.preventDefault();
     }
     // down for next command
     else if (e.keyCode === 40) {
-      cycleCommand(1);
+      onCycleCommand(1);
       e.preventDefault();
     }
   };
@@ -104,7 +106,10 @@ export default function TerminalInputLine({
         ref={inputLine}
       />
       {shouldShowAutocomplete && (
-        <span className="font-mono text-sm italic text-gray-500">
+        <span
+          className="font-mono text-sm italic text-gray-500"
+          onClick={onAutocompleteClick}
+        >
           {autocomplete.substring(sanitize(command).length)}
         </span>
       )}
