@@ -21,7 +21,7 @@ interface InputLine {
   canEdit: boolean;
 }
 
-const API_URL_ROOT = "http://localhost:3000";
+const API_URL_ROOT = "http://192.168.86.250:3000";
 
 // zero-width space to allow cursor to focus on empty lines
 const FOCUS_HACK = "\u200B";
@@ -58,7 +58,8 @@ const fetchCommandResults = async (command: string) => {
       return { message: JSON.stringify(response), error: false };
     } catch (e) {
       return {
-        message: "Error calling the API! Check the route or try again later.",
+        message:
+          "Error calling the API! Check the route you typed or send me a message about this: me@davidhu.me.",
         error: true,
       };
     }
@@ -89,7 +90,8 @@ export default function Terminal() {
 
   // copilot: react command that scrolls to the bottom of the terminal
   useEffect(() => {
-    if (endCommandsRef.current)
+    const isMobile = window.innerWidth < 768;
+    if (endCommandsRef.current && lines.length > 1 && !isMobile)
       scrollIntoView(endCommandsRef.current, { behavior: "smooth" });
   }, [lines]);
 
@@ -105,7 +107,7 @@ export default function Terminal() {
     ).command = `curl ${API_URL_ROOT}/api${route}`;
 
     setLines(newLines);
-    handleExecuteCommand();
+    setTimeout(() => handleExecuteCommand(), 500);
   };
 
   const handleAutocompleteClick = () => {
@@ -116,7 +118,7 @@ export default function Terminal() {
     ).autoComplete;
 
     setLines(newLines);
-    handleExecuteCommand();
+    setTimeout(() => handleExecuteCommand(), 500);
   };
 
   /**
@@ -198,10 +200,10 @@ export default function Terminal() {
 
   return (
     <div
-      className="w-2/3 min-w-[400px] max-w-2xl rounded-lg shadow-2xl shadow-gray-900"
+      className="w-2/3rounded-lg shadow-2xl shadow-gray-900"
       onClick={() => handleRefocusTrigger()}
     >
-      <div className="relative h-9 rounded-t-lg bg-[rgba(27,27,34,1)] before:absolute before:left-1 before:m-3 before:h-3 before:w-3 before:rounded-full before:bg-[rgba(60,60,60,1)] before:shadow-[1.2em_0em_rgba(60,60,60,1),2.4em_0em_rgba(60,60,60,1)] before:content-['']"></div>
+      <div className="relative h-9 rounded-t-lg bg-[rgba(45,45,45,1)] before:absolute before:left-1 before:m-3 before:h-3 before:w-3 before:rounded-full before:bg-[rgba(90,90,90,1)] before:shadow-[1.2em_0em_rgba(90,90,90,1),2.4em_0em_rgba(90,90,90,1)] before:content-['']"></div>
       <div className="relative h-96 overflow-scroll rounded-b-lg bg-[rgba(18,18,18,1)] pb-2 font-mono">
         {lines.map((line) => {
           if (line.type === "input") {
@@ -227,7 +229,7 @@ export default function Terminal() {
                 onApiRouteClick={handleApiRouteClick}
               />
             ) : (
-              <div className="px-2 text-gray-500" key={line.id}>
+              <div className="px-2 text-xs text-gray-500" key={line.id}>
                 {line.result}
               </div>
             );

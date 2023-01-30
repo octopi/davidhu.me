@@ -20,7 +20,7 @@ export default async function handler(
       { path: "/me/contact", method: "GET" },
     ],
     me: {
-      about: "Explore my API by following the paths below!",
+      about: "Explore this API by following the `links`!",
       help: "On mobile or desktop, you can always tap the links instead of typing.",
     },
   };

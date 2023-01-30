@@ -70,13 +70,15 @@ export default function TerminalInputLine({
   };
 
   const focusInputLine = () => {
-    let il = inputLine.current;
-    let textNode = il?.firstChild;
-    if (il && textNode) {
-      il.focus();
-      let sel = window.getSelection()?.selectAllChildren(il);
-      window.getSelection()?.collapseToEnd();
-    }
+    const isMobile = window.innerWidth < 768;
+      let il = inputLine.current;
+      let textNode = il?.firstChild;
+      console.log({il, textNode, selection:window.getSelection()});
+      if (il && textNode) {
+        il.focus();
+        let sel = window.getSelection()?.selectAllChildren(il);
+        window.getSelection()?.collapseToEnd();
+      }
   };
 
   useEffect(() => {
@@ -94,12 +96,12 @@ export default function TerminalInputLine({
 
   return (
     <div
-      className="px-2 pt-2 before:text-gray-500 before:content-['$']"
+      className="px-2 pt-2 text-sm before:text-gray-500 before:content-['$']"
       onClick={focusInputLine}
     >
       <span
         contentEditable={canEdit}
-        className="top-0 left-4 ml-2 border-0 bg-transparent text-sm font-bold text-gray-300 caret-blue-400 outline-none"
+        className="top-0 left-4 ml-2 break-words border-0 bg-transparent text-xs font-bold text-gray-300 caret-blue-400 outline-none"
         onInput={handleChange}
         dangerouslySetInnerHTML={{ __html: defaultCommand.current }}
         onKeyDown={handleKeyDown}
@@ -107,7 +109,7 @@ export default function TerminalInputLine({
       />
       {shouldShowAutocomplete && (
         <span
-          className="font-mono text-sm italic text-gray-500"
+          className="font-mono text-xs italic text-gray-500"
           onClick={onAutocompleteClick}
         >
           {autocomplete.substring(sanitize(command).length)}

@@ -20,7 +20,7 @@ export default function JSONResponse({
       );
     if (str.startsWith("/me/"))
       return (
-        <a className="cursor-pointer" onClick={() => onApiRouteClick(str)}>
+        <a className="cursor-pointer italic" onClick={() => onApiRouteClick(str)}>
           {str}
         </a>
       );
@@ -34,7 +34,7 @@ export default function JSONResponse({
       case "string":
         result = (
           <span>
-            <pre className="inline whitespace-pre-wrap text-green-900">
+            <pre className="inline whitespace-pre-wrap text-green-600">
               "{magicifyString(o)}"
             </pre>
             {hasMore ? "," : ""}
@@ -43,14 +43,14 @@ export default function JSONResponse({
         break;
       case "number":
         result = (
-          <pre className="inline whitespace-pre-wrap text-green-900">
+          <pre className="inline whitespace-pre-wrap text-green-600">
             o{hasMore ? "," : ""}
           </pre>
         );
         break;
       case "boolean":
         result = (
-          <pre className="inline whitespace-pre-wrap text-green-900">
+          <pre className="inline whitespace-pre-wrap text-green-600">
             o.toString(){hasMore ? "," : ""}
           </pre>
         );
@@ -85,7 +85,7 @@ export default function JSONResponse({
                   <div key={idx}>
                     <pre className="inline whitespace-pre-wrap">
                       {" ".repeat((indent + 1) * 2)}
-                      <pre className="inline whitespace-pre-wrap text-blue-800">
+                      <pre className="inline whitespace-pre-wrap text-blue-600">
                         "{key}"
                       </pre>
                       {`: `}
@@ -111,7 +111,7 @@ export default function JSONResponse({
   };
 
   return (
-    <div className="px-2 text-sm text-gray-500">
+    <div className="px-2 text-xs text-gray-500">
       <pre className="whitespace-pre-wrap">{prettify(JSON.parse(data))}</pre>
     </div>
   );
