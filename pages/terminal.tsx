@@ -77,9 +77,9 @@ export default function Terminal() {
   ];
   const [lines, setLines] = useState<Array<TerminalLine>>(initialLines);
   const [refocusTrigger, setRefocusTrigger] = useState(false);
+  const [cycleIndex, setCycleIndex] = useState(0);
 
   const endCommandsRef = useRef<HTMLDivElement | null>(null);
-  const boo = useRef<HTMLDivElement | null>(null);
 
   // copilot: react command that scrolls to the bottom of the terminal
   useEffect(() => {
@@ -92,6 +92,10 @@ export default function Terminal() {
     setRefocusTrigger(!refocusTrigger);
   };
 
+  /**
+   * Update state to reflect the current text of the command
+   * @param command string the command
+   */
   const updateCommand = (command: string) => {
     const newLines = [...lines];
 
@@ -107,6 +111,28 @@ export default function Terminal() {
     });
     newLines[newLines.length - 1] = newInputLine;
     setLines(newLines);
+    setCycleIndex(0);
+  };
+
+  const cycleCommand = (direction: number) => {
+    let newCycleIndex = cycleIndex + direction;
+    let prevCommandIndex = lines.length - 1 + newCycleIndex * 2;
+    if (newCycleIndex > 0) return; // don't loop around
+    if (lines.length - 1 + newCycleIndex * 2 < 0) return;
+
+    const newLines = [...lines];
+    
+    if (newCycleIndex === 0) {
+      (newLines[newLines.length - 1] as InputLine).command = '';
+    } else {
+      (newLines[newLines.length - 1] as InputLine).command = (
+        lines[prevCommandIndex] as InputLine
+      ).command;
+    }
+
+    setLines(newLines);
+    setCycleIndex(newCycleIndex);
+    setRefocusTrigger(!refocusTrigger);
   };
 
   const executeCommand = async () => {
@@ -131,7 +157,9 @@ export default function Terminal() {
     });
 
     // if the command was valid, suggest autocomplete for the next command
-    const newAutocompleteIndex = result.error ? autocompleteIndex : autocompleteIndex + 1;
+    const newAutocompleteIndex = result.error
+      ? autocompleteIndex
+      : autocompleteIndex + 1;
 
     // add a new input line
     newCommands.push({
@@ -163,6 +191,7 @@ export default function Terminal() {
                 command={line.command}
                 updateCommand={updateCommand}
                 executeCommand={executeCommand}
+                cycleCommand={cycleCommand}
                 canAutocomplete={line.canAutoComplete}
                 autocomplete={line.autoComplete}
                 refocusTrigger={refocusTrigger}

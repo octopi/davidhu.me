@@ -4,6 +4,7 @@ type TerminalInputLineProps = {
   canEdit: boolean;
   command: string;
   updateCommand: (command: string) => void;
+  cycleCommand: (direction: number) => void;
   executeCommand: () => void;
   canAutocomplete: boolean;
   autocomplete: string;
@@ -21,6 +22,7 @@ export default function TerminalInputLine({
   command,
   updateCommand,
   executeCommand,
+  cycleCommand,
   canAutocomplete,
   autocomplete,
   refocusTrigger,
@@ -45,12 +47,23 @@ export default function TerminalInputLine({
   };
 
   // @ts-ignore
-  const completeCommand = (e: React.InputEvent<HTMLSpanElement>) => {
+  const handleKeyDown = (e: React.InputEvent<HTMLSpanElement>) => {
+    // tab for autocomplete
     if (e.keyCode === 9 && canAutocomplete) {
       updateCommand(autocomplete);
       if (inputLine.current) inputLine.current.innerText = autocomplete;
       e.preventDefault();
       focusInputLine();
+    }
+    // up for previous command
+    else if (e.keyCode === 38) {
+      cycleCommand(-1);
+      e.preventDefault();
+    }
+    // down for next command
+    else if (e.keyCode === 40) {
+      cycleCommand(1);
+      e.preventDefault();
     }
   };
 
@@ -68,6 +81,12 @@ export default function TerminalInputLine({
     focusInputLine();
   }, [refocusTrigger]);
 
+  useEffect(() => {
+    console.log("here")
+    if (inputLine.current) inputLine.current.innerText = command;
+    focusInputLine();
+  }, [command]);
+
   const shouldShowAutocomplete =
     canAutocomplete &&
     autocomplete.substring(0, sanitize(command).length) === sanitize(command);
@@ -82,7 +101,7 @@ export default function TerminalInputLine({
         className="top-0 left-4 ml-2 border-0 bg-transparent text-sm font-bold text-gray-300 caret-blue-400 outline-none"
         onInput={handleChange}
         dangerouslySetInnerHTML={{ __html: defaultCommand.current }}
-        onKeyDown={completeCommand}
+        onKeyDown={handleKeyDown}
         ref={inputLine}
       />
       {shouldShowAutocomplete && (
