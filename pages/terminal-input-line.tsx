@@ -109,7 +109,7 @@ export default function TerminalInputLine({
       />
       {shouldShowAutocomplete && (
         <span
-          className="font-mono text-xs italic text-gray-500"
+          className="font-mono text-xs italic text-gray-500 cursor-pointer"
           onClick={onAutocompleteClick}
         >
           {autocomplete.substring(sanitize(command).length)}

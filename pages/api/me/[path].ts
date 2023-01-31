@@ -46,7 +46,26 @@ export default async function handler(
     case "experience":
       response = _.merge({
         links,
-        experience: {},
+        experience: [
+          {
+            company: "Foursquare",
+            roles: ["Manager, Developer Products & Relations", "Developer Advocate"],
+            start: "Jan 2013",
+            end: "Apr 2016"
+          },
+          {
+            company: "Dexter",
+            roles: ["VP, Engineering & Strategy"],
+            start: "Apr 2016",
+            end: "Dec 2018"
+          },
+          {
+            company: "Stripe",
+            roles: ["Product Manager", "Integration Engineer"],
+            start: "Feb 2019",
+            end: "Feb 2023"
+          }
+        ],
       });
       break;
     case "contact":
@@ -55,6 +74,7 @@ export default async function handler(
         contact: {
           email: "mailto:me@davidhu.me",
           twitter: "https://twitter.com/octopi",
+          linkedin: "https://www.linkedin.com/in/octopi",
           github: "https://github.com/octopi",
           instagram: "https://instagram.com/octopeye",
         },

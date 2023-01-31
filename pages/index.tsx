@@ -14,12 +14,12 @@ const Home: NextPage = () => {
           <img src="/profile.png" className="inline w-10 h-10 mr-2" />
           <div>
             <h1 className="text-4xl font-bold text-slate-500">
-              Hi! I'm David and I like to help people build things.
+              Hi! I'm David.
             </h1>
 
             <h2 className="my-4 text-lg text-slate-500">
               I have 8+ years of experience building developer products and
-              educating people about them. Learn more by trying my API below!
+              helping people build with them. Learn more by trying my API below!
             </h2>
           </div>
         </div>
