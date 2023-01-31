@@ -38,7 +38,7 @@ export default async function handler(
         bio: {
           homebase: "Brooklyn, NY",
           education: "B.S. Computer Science, Columbia University",
-          likes: ["⛷️", "✈️", "🏔️", "🍺", "🍗", "🍜"],
+          likes: ["⛷️", "🛫", "🏔️", "🍺", "🍗", "🍜"],
           dislikes: ["🍅"],
         },
       });
