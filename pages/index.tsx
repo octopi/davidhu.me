@@ -4,29 +4,27 @@ import Terminal from "./terminal";
 
 const Home: NextPage = () => {
   return (
-    <div className="flex min-h-screen flex-col flex-1 items-center justify-center bg-slate-100 py-2">
+    <div className="flex min-h-screen flex-1 flex-col items-center justify-center bg-slate-100 py-2">
       <Head>
         <title>davidhu.me</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <main className="flex w-96 flex-1 flex-col items-center justify-center p-12 md:w-[620px]">
+        <div className="flex">
+          <img src="/profile.png" className="inline w-10 h-10 mr-2" />
+          <div>
+            <h1 className="text-4xl font-bold text-slate-500">
+              Hi! I'm David and I like to help people build things.
+            </h1>
 
-      <main className="flex flex-col items-center justify-center p-12 w-96 md:w-[620px] flex-1">
-        <h1 className="text-4xl font-bold text-slate-500">
-          Hi! I'm David and I like to help people build things.
-        </h1>
-
-        <h2 className="my-4 text-lg text-slate-500">
-          I have 8+ years of experience building developer products and
-          educating people about them. Learn more by trying my API below!
-        </h2>
-
-        {/* <div className="w-20">
-          <video autoPlay controls loop muted>
-            <source src="/test.mov" type="video/mp4" />
-          </video>
-        </div> */}
+            <h2 className="my-4 text-lg text-slate-500">
+              I have 8+ years of experience building developer products and
+              educating people about them. Learn more by trying my API below!
+            </h2>
+          </div>
+        </div>
         <div className="mt-4">
-          <p className="bg-slate-100 text-sm text-slate-500 md:hidden mb-4">
+          <p className="mb-4 bg-slate-100 text-sm text-slate-500 md:hidden">
             📱 Mobile? No need to type; just tap everything in{" "}
             <span className="italic">italics</span>.
           </p>
