@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Terminal from "./terminal";
+import Terminal from "../components/terminal";
 
 const Home: NextPage = () => {
   return (
