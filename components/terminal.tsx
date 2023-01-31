@@ -22,7 +22,9 @@ interface InputLine {
 }
 
 // @ts-ignore
-const API_URL_ROOT:string = process.env.NEXT_PUBLIC_API_HOST;
+const API_URL_ROOT: string = process.env.NEXT_PUBLIC_VERCEL_URL
+  ? "https://" + process.env.NEXT_PUBLIC_VERCEL_URL
+  : "http://" + process.env.NEXT_PUBLIC_API_HOST;
 
 // zero-width space to allow cursor to focus on empty lines
 const FOCUS_HACK = "\u200B";
@@ -201,7 +203,7 @@ export default function Terminal() {
 
   return (
     <div
-      className="rounded-lg md:w-[620px] shadow-2xl shadow-gray-900"
+      className="rounded-lg shadow-2xl shadow-gray-900 md:w-[620px]"
       onClick={() => handleRefocusTrigger()}
     >
       <div className="relative h-9 rounded-t-lg bg-[rgba(45,45,45,1)] before:absolute before:left-1 before:m-3 before:h-3 before:w-3 before:rounded-full before:bg-[rgba(90,90,90,1)] before:shadow-[1.2em_0em_rgba(90,90,90,1),2.4em_0em_rgba(90,90,90,1)] before:content-['']"></div>
@@ -230,7 +232,10 @@ export default function Terminal() {
                 onApiRouteClick={handleApiRouteClick}
               />
             ) : (
-              <div className="px-2 text-xs text-gray-500 whitespace-pre-wrap break-words" key={line.id}>
+              <div
+                className="whitespace-pre-wrap break-words px-2 text-xs text-gray-500"
+                key={line.id}
+              >
                 {line.result}
               </div>
             );
