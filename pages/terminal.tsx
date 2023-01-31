@@ -21,7 +21,8 @@ interface InputLine {
   canEdit: boolean;
 }
 
-const API_URL_ROOT = "http://192.168.86.250:3000";
+// @ts-ignore
+const API_URL_ROOT:string = process.env.NEXT_PUBLIC_API_HOST;
 
 // zero-width space to allow cursor to focus on empty lines
 const FOCUS_HACK = "\u200B";
