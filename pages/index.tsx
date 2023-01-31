@@ -10,7 +10,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex w-full flex-col items-center justify-center p-12">
+      <main className="flex flex-col items-center justify-center p-12 w-96 md:w-[620px] flex-1">
         <h1 className="text-4xl font-bold text-slate-500">
           Hi! I'm David and I like to help people build things.
         </h1>
