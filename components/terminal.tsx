@@ -22,9 +22,9 @@ interface InputLine {
 }
 
 // @ts-ignore
-const API_URL_ROOT: string = process.env.NEXT_PUBLIC_VERCEL_URL
-  ? "https://" + process.env.NEXT_PUBLIC_VERCEL_URL
-  : "http://" + process.env.NEXT_PUBLIC_API_HOST;
+const API_URL_ROOT: string =
+  'https://' +
+  (process.env.NEXT_PUBLIC_API_URL_ROOT || process.env.NEXT_PUBLIC_VERCEL_URL)
 
 // zero-width space to allow cursor to focus on empty lines
 const FOCUS_HACK = "\u200B";
