@@ -18,7 +18,7 @@ const Home: NextPage = () => {
             </h1>
 
             <h2 className="my-4 text-lg text-slate-500">
-              I have 8+ years of experience building developer products and
+              I have 10+ years of experience building developer products and
               helping people build with them. Learn more by trying my API below!
             </h2>
           </div>
