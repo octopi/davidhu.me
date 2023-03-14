@@ -73,7 +73,6 @@ export default function TerminalInputLine({
     const isMobile = window.innerWidth < 768;
       let il = inputLine.current;
       let textNode = il?.firstChild;
-      console.log({il, textNode, selection:window.getSelection()});
       if (il && textNode) {
         il.focus();
         let sel = window.getSelection()?.selectAllChildren(il);
